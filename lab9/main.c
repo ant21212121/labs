@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include "matrixfunc.h"
+
+int main()
+{
+    int mat[10000];
+    size_t rows = 0;
+    size_t cols = 0;
+    int is_filled = 0;
+    char choice = 0;
+
+    while (choice != 'g')
+    {
+        printf("a Задать размер матрицы (строки, столбцы)\n");
+        printf("b Заполнить матрицу\n");
+        printf("c Представление матрицы (значения, адреса элементов)\n");
+        printf("d Вычисление среднего арифметического всех элементов матрицы\n");
+        printf("e Определение максимального элемента каждой строки матрицы\n");
+        printf("f Определение разницы между максимальным и минимальным элементами матрицы\n");
+        printf("g Выход\n");
+        printf("Выберите пункт: ");
+        if (scanf(" %c", &choice) != 1)
+        {
+            break;
+        }
+        switch (choice)
+        {
+            case 'a':
+                printf("Введите количество строк и столбцов (от 1 до 100): ");
+                is_filled = 0;
+                if (scanf("%zu %zu", &rows, &cols) == 2 && rows > 0 && rows <= 100 && cols > 0 && cols <= 100)
+                {
+                    printf("размер матрицы: %zu x %zu\n", rows, cols);
+                }
+                else
+                {
+                    printf("некорректный размер\n");
+                    rows = 0;
+                    cols = 0;
+                    int ch;
+                    while ((ch = getchar()) != '\n' && ch != EOF);
+                }
+                break;
+            case 'b':
+                if (rows == 0 || cols == 0)
+                {
+                    printf("сначала задайте размер матрицы (a)\n");
+                }
+                else
+                {
+                    if (fill_mat(mat, rows, cols))
+                    {
+                        is_filled = 1;
+                    }
+                    else
+                    {
+                        printf("некорректный ввод элементов\n");
+                        is_filled = 0;
+                    }
+                }
+                break;
+            case 'c':
+                if (!is_filled)
+                {
+                    printf("сначала задайте и заполните матрицу (a, b)\n");
+                }
+                else
+                {
+                    print_mat(mat, rows, cols);
+                }
+                break;
+            case 'd':
+                if (!is_filled)
+                {
+                    printf("сначала задайте и заполните матрицу (a, b)\n");
+                }
+                else
+                {
+                    printf("%.2f\n", avg_mat(mat, rows, cols));
+                }
+                break;
+            case 'e':
+                if (!is_filled)
+                {
+                    printf("сначала задайте и заполните матрицу (a, b)\n");
+                }
+                else
+                {
+                    max_rows(mat, rows, cols);
+                }
+                break;
+            case 'f':
+                if (!is_filled)
+                {
+                    printf("сначала задайте и заполните матрицу (a, b)\n");
+                }
+                else
+                {
+                    printf("%d\n", diff_max_min(mat, rows, cols));
+                }
+                break;
+            case 'g':
+                printf("выход\n");
+                break;
+            default:
+                printf("неизвестный пункт\n");
+                break;
+        }
+    }
+    return 0;
+}
